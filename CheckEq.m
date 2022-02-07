@@ -53,3 +53,5 @@ pretty(eq1)
 eq2 = eq2ST/eq1ST;
 eq2 = simplify(eq2);
 pretty(eq2)
+
+

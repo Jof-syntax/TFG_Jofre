@@ -10,7 +10,7 @@ lam2 = lambda - lamPreDef;
 
 v = sym('v','real');
 
-kappa = sym('k','real');
+kappa = sym('kappa','real');
 kPreDef = sym('kPreDef','real');
 
 %Elas3D definitions
@@ -78,7 +78,7 @@ muAsEta = simplify(muAsEtaK);
 
 kappaAsEtaM = solve(etaM == etaMu, kappa, 'ReturnConditions',true); %Conditions
 kappaAsEtaM = subs(kappaAsEtaM, mu, muAsEta);
-kappaAsEta = simplify(kappaAsEtaM.k);
+kappaAsEta = simplify(kappaAsEtaM.kappa);
 
 dmu = subs(dmu, kappa, kappaAsEta);
 dmu = subs(dmu, mu, muAsEta);
