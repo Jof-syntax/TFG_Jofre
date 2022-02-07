@@ -1,5 +1,4 @@
 function Results2D = EtaComputer2D();
-clc;
 
 mu = sym('mu','real');
 muPreDef = sym('muPreDef','real'); 
@@ -75,7 +74,7 @@ muAsEtaK = solve(etaK == etaKappa, mu);
 muAsEta = simplify(muAsEtaK);
 
 kappaAsEtaM = solve(etaM == etaMu, kappa, 'ReturnConditions', true); %Conditions
-kappaAsEtaM = subs(kappaAsEtaM, mu, muAsEtaK);
+kappaAsEtaM = subs(kappaAsEtaM, mu, muAsEta);
 kappaAsEta = simplify(kappaAsEtaM.k);
 
 dmu = subs(dmu, kappa, kappaAsEta);
@@ -86,6 +85,10 @@ dk = subs(dk, kappa, kappaAsEta);
 dk = subs(dk, mu, muAsEta);
 dk = simplify(dk);
 
+disp('dmu(eta) = ');
+pretty(dmu);
+disp('dk(eta) = ');
+pretty(dk);
 Results2D.dkEta = dk;
 Results2D.dmuEta = dmu;
 
