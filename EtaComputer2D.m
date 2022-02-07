@@ -1,4 +1,4 @@
-function EtaComputer2D();
+function Results2D = EtaComputer2D();
 clc;
 
 mu = sym('mu','real');
@@ -49,6 +49,8 @@ disp('etaM = ');
 pretty(etaM);
 disp('etaK = ');
 pretty(etaK);
+Results2D.etaM = etaM;
+Results2D.etaK = etaK;
 
 % Obtain dk(kappa, mu) & dmu(kappa, mu)
 
@@ -56,11 +58,13 @@ dmu = qmu*mu*(muPreDef-mu);
 dmu = simplify(dmu);
 dk = qk*kappa*(kPreDef-kappa);
 dk = simplify(dk);
+
 disp('dmu(kappa, mu) = ');
 pretty(dmu);
-
 disp('dk(kappa, mu) = ');
 pretty(dk);
+Results2D.dk = dk;
+Results2D.dmu = dmu;
 
 % Obtain dk(etaK, etaMu) & dmu(etaK, etaMu)
 
@@ -70,11 +74,9 @@ etaMu = sym('etaMu','real');
 muAsEtaK = solve(etaK == etaKappa, mu);
 muAsEta = simplify(muAsEtaK);
 
-kappaAsEtaM = solve(etaM == etaMu, kappa, 'ReturnConditions',true); %Conditions
+kappaAsEtaM = solve(etaM == etaMu, kappa, 'ReturnConditions', true); %Conditions
 kappaAsEtaM = subs(kappaAsEtaM, mu, muAsEtaK);
 kappaAsEta = simplify(kappaAsEtaM.k);
-
-
 
 dmu = subs(dmu, kappa, kappaAsEta);
 dmu = subs(dmu, mu, muAsEta);
@@ -83,7 +85,9 @@ dmu = simplify(dmu);
 dk = subs(dk, kappa, kappaAsEta);
 dk = subs(dk, mu, muAsEta);
 dk = simplify(dk);
-dk = simplify(dk);
+
+Results2D.dkEta = dk;
+Results2D.dmuEta = dmu;
 
 
 

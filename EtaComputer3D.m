@@ -1,4 +1,4 @@
-function EtaComputer();
+function Results3D = EtaComputer3D();
 clc;
 
 mu = sym('mu','real');
@@ -35,29 +35,34 @@ m2 = subs(m2, lambda, kappa-2/3*mu);
 m2 = subs(m2, lamPreDef, kPreDef-2/3*muPreDef);
 m2 = simplify(m2);
 
-% New definitions
+% Obtain dk(kappa, mu) & dmu(kappa, mu)
 
 dmu = m1;
 dmu = simplify(dmu);
 dk = m1*m2+m1*2/3;
 dk = simplify(dk);
 
+Results3D.dk = dk;
+Results3D.dmu = dmu;
+
+% Obtain Q
 qmu = dmu/(mu*(muPreDef-mu));
 qmu = simplify(qmu);
 
 qk = dk/(kappa*(kPreDef-kappa));
 qk = simplify(qk);
 
-
+% Obtain Etas
 etaM = (qmu*mu*muPreDef-mu)/(1-qmu*mu);
 etaM = simplify(etaM);
 pretty(etaM);
 etaK = (qk*kappa*kPreDef-kappa)/(1-qk*kappa);
 etaK = simplify(etaK);
 pretty(etaK);
+Results3D.etaM = etaM;
+Results3D.etaK = etaK;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Obtain dk(etaK, etaMu) & dmu(etaK, etaMu)
 etaKappa = sym('etaKappa','real');
 etaMu = sym('etaMu','real');
 
@@ -68,17 +73,17 @@ kappaAsEtaM = solve(etaM == etaMu, kappa, 'ReturnConditions',true); %Conditions
 kappaAsEtaM = subs(kappaAsEtaM, mu, muAsEtaK);
 kappaAsEta = simplify(kappaAsEtaM.k);
 
-
-
 dmu = subs(dmu, kappa, kappaAsEta);
 dmu = subs(dmu, mu, muAsEta);
 dmu = simplify(dmu);
-
+pretty(dmu);
 dk = subs(dk, kappa, kappaAsEta);
 dk = subs(dk, mu, muAsEta);
 dk = simplify(dk);
 dk = simplify(dk);
+pretty(dk);
 
-
+Results3D.dkEta = dk;
+Results3D.dmuEta = dmu;
 
 
