@@ -12,8 +12,6 @@ B = sym('B','real');
 C = sym('C','real');
 D = sym('D','real');
 
-
-
  f = @(rho) (A.*rho.^2+B.*rho+C)./(D.*rho+1); %SIMPALL function
  df = @(rho) (A*D.*rho.^2+2*A.*rho+B-C*D)./(D.*rho+1).^2; % derivation checked
  
