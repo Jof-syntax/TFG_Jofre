@@ -17,10 +17,12 @@ kPreDef = sym('kPreDef','real');
 m1n = 15*mu*mu2*(v-1);
 m1d = 15*mu*(1-v)+2*mu2*(5*v-4);
 m1 = m1n/m1d;
+m1 = simplify(m1);
 
 m2n = lam2*(15*mu*lambda*(1-v) + 2*lambda*mu2*(5*v-4)) - 2*mu2*(lambda*mu2-5*mu*v*lam2);
 m2d = 5*mu2*(3*mu*lambda*(1-v)-3*mu*v*lam2-lambda*mu2*(1-2*v));
 m2 = m2n/m2d;
+m2 = simplify(m2);
 
 % Change of variables
 

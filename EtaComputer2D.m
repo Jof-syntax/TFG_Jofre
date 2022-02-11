@@ -11,11 +11,17 @@ v = @(ki, mui) (ki-mui)/(ki+mui);
 E = @(ki, mui) (4*ki*mui)/(ki+mui);
 
 alpha = (1+v(kappa, mu))/(1-v(kappa, mu));
+alpha = simplify(alpha);
 beta = (3-v(kappa, mu))/(1+v(kappa, mu));
+beta = simplify(beta);
 gamma = E(kPreDef, muPreDef)/E(kappa, mu);
+gamma = simplify(gamma);
 tau1 = (1+v(kPreDef, muPreDef))/(1+v(kappa, mu));
+tau1 = simplify(tau1);
 tau2 = (1-v(kPreDef, muPreDef))/(1-v(kappa, mu));
+tau2 = simplify(tau2);
 tau3 = (v(kPreDef, muPreDef)*(3*v(kappa, mu)-4)+1)/(v(kappa, mu)*(3*v(kappa, mu)-4)+1);
+tau3 = simplify(tau3);
 
 P1n = (1+beta)*(tau1-gamma);
 P1d = beta*gamma+tau1;

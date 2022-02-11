@@ -34,7 +34,7 @@ A = @(f0, f1, df0, df1) -(-f0^2+2*f0*f1-f1^2+df0*df1) /(df1-f1+f0);
 B = @(f0, f1, df0, df1) -(df0*f1-df0*df1+df1*f0-2*f0*f1+2*f0^2)/(df1-f1+f0);
 C = @(f0)               f0;
 D = @(f0, f1, df0, df1) -(df0+df1+2*f0-2*f1)/(df1-f1+f0);
- 
+
 df0 = @(eta, f0, f1) (f0+eta)*(f1-f0)/(f1+eta);
 df1 = @(eta, f0, f1) (f1+eta)*(f1-f0)/(f0+eta);
 
@@ -47,14 +47,7 @@ Eta1 = etamu(mu1, kappa1);
 DF0 = df0(Eta0, F0, F1);
 DF1 = df1(Eta1, F0, F1);
 
-data.AA = A(F0, F1, DF0, DF1);
-data.BB = B(F0, F1, DF0, DF1);
-data.CC = C(F0);
-data.DD = D(F0, F1, DF0, DF1);
-data.F0 = F0;
-data.F1 = F1;
-data.Eta0 = Eta0;
-data.Eta1 = Eta1;
+data = computeData(F0, F1, DF0, DF1, Eta0, Eta1, A, B, C, D);
 computePlot('Shear modulus', dimension, data);
 
 %% Case kappa
@@ -64,7 +57,12 @@ Eta0 = etakappa(mu0, kappa);
 Eta1 = etakappa(mu1, kappa);
 DF0 = df0(Eta0, F0, F1);
 DF1 = df1(Eta1, F0, F1);
+data = computeData(F0, F1, DF0, DF1, Eta0, Eta1, A, B, C, D);
+computePlot('Bulk modulus', dimension, data);
 
+end
+
+function data = computeData(F0, F1, DF0, DF1, Eta0, Eta1, A, B, C, D)
 data.AA = A(F0, F1, DF0, DF1);
 data.BB = B(F0, F1, DF0, DF1);
 data.CC = C(F0);
@@ -73,8 +71,6 @@ data.F0 = F0;
 data.F1 = F1;
 data.Eta0 = Eta0;
 data.Eta1 = Eta1;
-computePlot('Bulk modulus', dimension, data);
-
 end
 
 function computePlot(Title, dimension, data)
@@ -93,17 +89,17 @@ f = @(rho, A, B, C, D) (A.*rho.^2+B.*rho+C)./(D.*rho+1); %SIMPALL
 plot(linspace(0,1,100),f(linspace(0,1,100), AA, BB, CC, DD), 'r', 'LineWidth',2); %SIMP-ALL plot
 SIMP = @(rho) (1-rho.^3).*F0+rho.^3.*F1; %SIMP
 plot(linspace(0,1,100),SIMP(linspace(0,1,100)), 'b', 'LineWidth',2); %SIMP plot
-    if dimension == 2
-        fHsLb = @(rho) F0.*(1-rho)+F1.*rho-((1-rho).*rho*(F1-F0)^2)./(F0.*rho+F1.*(1-rho)+Eta0); %LB
-        fHsUb = @(rho) F0.*(1-rho)+F1.*rho-((1-rho).*rho*(F1-F0)^2)./(F0.*rho+F1.*(1-rho)+Eta1); %UB
-        plot(linspace(0,1,100),fHsLb(linspace(0,1,100)), 'k', 'LineWidth',2); %LB plot
-        plot(linspace(0,1,100),fHsUb(linspace(0,1,100)), 'k', 'LineWidth',2); %UB plot  
-    elseif dimension == 3
-            fHsLb = @(rho) F1+rho./(1/(F0-F1)+(rho-1)./(F1+Eta1));
-            fHsUb = @(rho) F0+(rho-1)./(-1/(F0-F1)+rho./(F0+Eta0));
-            plot(linspace(0,1,100),fHsLb(linspace(0,1,100)), 'k', 'LineWidth',2); %LB plot
-            plot(linspace(0,1,100),fHsUb(linspace(0,1,100)), 'k', 'LineWidth',2); %UB plot  
-    end
+if dimension == 2
+    fHsLb = @(rho) F0.*(1-rho)+F1.*rho-((1-rho).*rho*(F1-F0)^2)./(F0.*rho+F1.*(1-rho)+Eta0); %LB
+    fHsUb = @(rho) F0.*(1-rho)+F1.*rho-((1-rho).*rho*(F1-F0)^2)./(F0.*rho+F1.*(1-rho)+Eta1); %UB
+    plot(linspace(0,1,100),fHsLb(linspace(0,1,100)), 'k', 'LineWidth',2); %LB plot
+    plot(linspace(0,1,100),fHsUb(linspace(0,1,100)), 'k', 'LineWidth',2); %UB plot
+elseif dimension == 3
+    fHsLb = @(rho) F0+(rho-1)./(1/(F0-F1)-rho./(F0+Eta0));
+    fHsUb = @(rho) F1+rho./(1/(F0-F1)+(rho-1)./(F1+Eta1));
+    plot(linspace(0,1,100),fHsLb(linspace(0,1,100)), 'k', 'LineWidth',2); %LB plot
+    plot(linspace(0,1,100),fHsUb(linspace(0,1,100)), 'k', 'LineWidth',2); %UB plot
+end
 set(gca,'fontsize',16)
 set(gca,'XTick',0:0.5:1)
 title(Title,'fontsize',20)
