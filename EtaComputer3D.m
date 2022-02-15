@@ -1,4 +1,4 @@
-function Results3D = EtaComputer3D();
+function EtaComputer3D();
 
 mu = sym('mu','real');
 muPreDef = sym('muPreDef','real'); 
@@ -13,7 +13,7 @@ v = sym('v','real');
 kappa = sym('kappa','real');
 kPreDef = sym('kPreDef','real');
 
-%Elas3D definitions
+% Elas3D definitions
 m1n = 15*mu*mu2*(v-1);
 m1d = 15*mu*(1-v)+2*mu2*(5*v-4);
 m1 = m1n/m1d;
@@ -47,8 +47,6 @@ disp('dmu(kappa, mu) = ');
 pretty(dmu);
 disp('dk(kappa, mu) = ');
 pretty(dk);
-Results3D.dk = dk;
-Results3D.dmu = dmu;
 
 % Obtain Q
 qmu = dmu/(mu*(muPreDef-mu));
@@ -68,10 +66,8 @@ disp('etaM = ');
 pretty(etaM);
 disp('etaK = ');
 pretty(etaK);
-Results3D.etaM = etaM;
-Results3D.etaK = etaK;
 
-% Obtain dk(etaK, etaMu) & dmu(etaK, etaMu)
+% Obtain dk(etaK, etaMu) & dmu(etaK, etaMu)       WRONG
 etaKappa = sym('etaKappa','real');
 etaMu = sym('etaMu','real');
 
@@ -89,13 +85,10 @@ dmu = simplify(dmu);
 dk = subs(dk, kappa, kappaAsEta);
 dk = subs(dk, mu, muAsEta);
 dk = simplify(dk);
-dk = simplify(dk);
 
 disp('dmu(eta) = ');
 pretty(dmu);
 disp('dk(eta) = ');
 pretty(dk);
-Results3D.dkEta = dk;
-Results3D.dmuEta = dmu;
 
 

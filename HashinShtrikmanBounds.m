@@ -1,6 +1,6 @@
 function HashinShtrikmanBounds();
 clc;
-%% 3 Dimension case
+% 3 Dimension case
 N = 3;
 porosity = sym('porosity','real');
 rho = sym('rho','real');
@@ -14,7 +14,6 @@ k1 = sym('k1','real');
 k0 = sym('k0','real');
 lambda1 = k1-mu1*2/N;
 lambda0 = k0-mu0*2/N;
-
 
 muUBf = solve(porosity/(2*(mu1-muUB)) == 1/(2*(mu1-mu0)) + ((1-porosity)*(N-1)*(k1+2*mu1))/((N^2+N-2)*mu1*(2*mu1+lambda1))   , muUB);
 muUBf = subs(muUBf, porosity, 1-rho);
@@ -45,16 +44,17 @@ F0 = sym('F0','real');
 Eta1 = sym('Eta1','real');
 Eta0 = sym('Eta0','real');
 
+% term to add to F1*rho + F0*(1-rho) + ...
 fsh1 = (-(rho).*(F0-F1)*(F0+Eta0) + (- F1*rho + F0*rho )* (F1*(1-rho)+F0*rho+Eta0))./(F1*(1-rho)+F0*rho+Eta0);
 fsh1 = simplify(fsh1);
 pretty(fsh1);
-
+% term to add to F1*rho + F0*(1-rho) + ...
 fsh2 = ((1-rho).*(F0-F1)*(F1+Eta1)+(F1-F1*rho-F0*(1-rho))*(F1*(1-rho)+F0*rho+Eta1))./(F1*(1-rho)+F0*rho+Eta1);
 fsh2 = simplify(fsh2);
 pretty(fsh2);
 
 %% N dimension
-clc;
+
 N = sym('N','real');
 porosity = sym('porosity','real');
 rho = sym('rho','real');

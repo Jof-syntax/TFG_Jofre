@@ -71,7 +71,7 @@ pretty(dk);
 Results2D.dk = dk;
 Results2D.dmu = dmu;
 
-% Obtain dk(etaK, etaMu) & dmu(etaK, etaMu)
+% Obtain dk(etaK, etaMu) & dmu(etaK, etaMu)       %WRONG
 
 etaKappa = sym('etaKappa','real');
 etaMu = sym('etaMu','real');

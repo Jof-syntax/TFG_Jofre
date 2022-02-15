@@ -1,40 +1,38 @@
 function SIMPALL(E1,E0,nu1,nu0, N)
-%% SIMPALL(1,0.01,1/3,1/3, N)         A
-%% SIMPALL(1,0.001, 0, 1/3, N)        B
-%% SIMPALL(1,0.01, -0.5, 1/3, N)      C
-%% SIMPALL(1,0.001, -0.75, 1/3, N)    D
-%% SIMPALL(1,0.001, -0.9, 1/3, N)     E
-%% Code
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SIMPALL(1,0.01,1/3,1/3, N)         A %%
+%% SIMPALL(1,0.001, 0, 1/3, N)        B %%
+%% SIMPALL(1,0.01, -0.5, 1/3, N)      C %%
+%% SIMPALL(1,0.001, -0.75, 1/3, N)    D %%
+%% SIMPALL(1,0.001, -0.9, 1/3, N)     E %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 mu=@(E,nu) E/(2*(1+nu));
-if N == 3
-    kappa = @(E,nu) E/(3*(1-2*nu)); %3D
-elseif N == 2
-    kappa = @(E,nu) E/(2*(1-nu));   %2D
-end
-mu0 = mu(E0,nu0); %mu
-mu1 = mu(E1,nu1); %muPreDef
+kappa = @(E,nu, N) (N*nu*E+E-2*E*nu)/(N-nu*N-2*N*nu^2);
 
-kappa0 = kappa( E0 , nu0 ); %kappa
-kappa1 = kappa( E1 , nu1 ); %kPreDef
+mu0 = mu(E0,nu0);
+mu1 = mu(E1,nu1); 
+kappa0 = kappa(E0, nu0, N);
+kappa1 = kappa(E1, nu1, N);
 
+etaMu = @(mu, kappa, N)  -(mu*(4*mu - kappa*N^2 - 2*mu*N^2 + 2*mu*N))/(2*N*(kappa + 2*mu)); 
+etaKappa = @(mu, kappa, N) (2*mu*(N - 1))/N; 
 
-etamu = @(mu, kappa, N)  -(mu*(4*mu - kappa*N^2 - 2*mu*N^2 + 2*mu*N))/(2*N*(kappa + 2*mu)); 
-etakappa = @(mu, kappa, N) (2*mu*(N - 1))/N; 
-
-
+% SIMP-ALL coeficients
 A = @(f0, f1, df0, df1) -(-f0^2+2*f0*f1-f1^2+df0*df1) /(df1-f1+f0);
 B = @(f0, f1, df0, df1) -(df0*f1-df0*df1+df1*f0-2*f0*f1+2*f0^2)/(df1-f1+f0);
-C = @(f0)               f0;
+C = @(f0)                f0;
 D = @(f0, f1, df0, df1) -(df0+df1+2*f0-2*f1)/(df1-f1+f0);
+
 
 df0 = @(eta, f0, f1) (f0+eta)*(f1-f0)/(f1+eta);
 df1 = @(eta, f0, f1) (f1+eta)*(f1-f0)/(f0+eta);
 
+
 %% Case mu
 F0 = mu0;
 F1 = mu1;
-Eta0 = etamu(mu0, kappa0, N);
-Eta1 = etamu(mu1, kappa1, N);
+Eta0 = etaMu(mu0, kappa0, N);
+Eta1 = etaMu(mu1, kappa1, N);
 DF0 = df0(Eta0, F0, F1);
 DF1 = df1(Eta1, F0, F1);
 data = computeData(F0, F1, DF0, DF1, Eta0, Eta1, A, B, C, D);
@@ -43,24 +41,13 @@ computePlot('Shear modulus', data);
 %% Case kappa
 F0 = kappa0;
 F1 = kappa1;
-Eta0 = etakappa(mu0, kappa, N);
-Eta1 = etakappa(mu1, kappa, N);
+Eta0 = etaKappa(mu0, kappa0, N);
+Eta1 = etaKappa(mu1, kappa1, N);
 DF0 = df0(Eta0, F0, F1);
 DF1 = df1(Eta1, F0, F1);
 data = computeData(F0, F1, DF0, DF1, Eta0, Eta1, A, B, C, D);
 computePlot('Bulk modulus', data);
 
-end
-
-function data = computeData(F0, F1, DF0, DF1, Eta0, Eta1, A, B, C, D)
-data.AA = A(F0, F1, DF0, DF1);
-data.BB = B(F0, F1, DF0, DF1);
-data.CC = C(F0);
-data.DD = D(F0, F1, DF0, DF1);
-data.F0 = F0;
-data.F1 = F1;
-data.Eta0 = Eta0;
-data.Eta1 = Eta1;
 end
 
 function computePlot(Title, data)
@@ -86,4 +73,15 @@ set(gca,'XTick',0:0.5:1)
 title(Title,'fontsize',20)
 xlabel('Density','fontsize',20)
 legend({'SIMP-ALL','SIMP', 'HS-LB','HS-UB'},'location','best','fontsize',20)
+end
+
+function data = computeData(F0, F1, DF0, DF1, Eta0, Eta1, A, B, C, D)
+data.AA = A(F0, F1, DF0, DF1);
+data.BB = B(F0, F1, DF0, DF1);
+data.CC = C(F0);
+data.DD = D(F0, F1, DF0, DF1);
+data.F0 = F0;
+data.F1 = F1;
+data.Eta0 = Eta0;
+data.Eta1 = Eta1;
 end
