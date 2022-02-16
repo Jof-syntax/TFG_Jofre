@@ -96,8 +96,8 @@ plot(linspace(0,1,1000),fHs(linspace(0,1,1000), Eta1), 'r', 'LineWidth',2); %UB 
 fHsLb = @(rho) F0-(rho).*(F0-F1)*(F0+Eta0)./(F1*(1-rho)+F0*rho+Eta0);
 fHsUb = @(rho) F1+(1-rho).*(F0-F1)*(F1+Eta1)./(F1*(1-rho)+F0*rho+Eta1);
 
-plot(linspace(0,1,1000),fHsLb(linspace(0,1,1000)), 'b', 'LineWidth',2); %LB plot
-plot(linspace(0,1,1000),fHsUb(linspace(0,1,1000)), 'b', 'LineWidth',2); %UB plot
+plot(linspace(0,1,1000)-0.02,fHsLb(linspace(0,1,1000)), 'b', 'LineWidth',2); %LB plot
+plot(linspace(0,1,1000)-0.02,fHsUb(linspace(0,1,1000)), 'b', 'LineWidth',2); %UB plot
 
 set(gca,'fontsize',16)
 set(gca,'XTick',0:0.5:1)
