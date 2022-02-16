@@ -1,7 +1,7 @@
 function HashinShtrikmanBounds();
 clc;
 % 3 Dimension case
-N = 3;
+N = 2;
 porosity = sym('porosity','real');
 rho = sym('rho','real');
 muUB = sym('muUB','real');

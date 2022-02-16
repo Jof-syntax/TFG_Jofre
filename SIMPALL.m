@@ -3,7 +3,7 @@ function SIMPALL(E1,E0,nu1,nu0, N)
 %% SIMPALL(1,0.01,1/3,1/3, N)         A %%      +3
 %% SIMPALL(1,0.001, 0, 1/3, N)        B %%      +3
 %% SIMPALL(1,0.01, -0.5, 1/3, N)      C %%       4
-%% SIMPALL(1,0.001, -0.75, 1/3, N)    D %%       4
+%% SIMPALL(1,0.001, -0.75, 1/3, N)    D %%       3
 %% SIMPALL(1,0.001, -0.9, 1/3, N)     E %%       3
 %% SIMPALL(1,1/3, 0.3, 0.35, N)      bi %%      +3
 %% SIMPALL(1,0.9, 0.3, -0.9, N)      bi %%       3
