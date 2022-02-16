@@ -5,10 +5,12 @@ function SIMPALL(E1,E0,nu1,nu0, N)
 %% SIMPALL(1,0.01, -0.5, 1/3, N)      C %%
 %% SIMPALL(1,0.001, -0.75, 1/3, N)    D %%
 %% SIMPALL(1,0.001, -0.9, 1/3, N)     E %%
+%% SIMPALL(1,1/3, 0.3, 0.35, N)      bi %%
+%% SIMPALL(1,0.9, 0.3, -0.9, N)      bi %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 mu=@(E,nu) E/(2*(1+nu));
 kappa = @(E,nu, N) (N*nu*E+E-2*E*nu)/(N-nu*N-2*N*nu^2);
-
+%kappa = @(E,nu, N) (N*nu*E+E-2*E*nu)/(N-nu*N); %ultim cas
 mu0 = mu(E0,nu0);
 mu1 = mu(E1,nu1); 
 kappa0 = kappa(E0, nu0, N);
