@@ -11,8 +11,8 @@ function SIMPALL(E1,E0,nu1,nu0, N)
 %% Nota la dimensio maxima imposable depen de Poisson (nu) %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 mu=@(E,nu) E/(2*(1+nu));
-kappa = @(E,nu, N) (N*nu*E+E-2*E*nu)/(N-nu*N-2*N*nu^2);
-%kappa = @(E,nu, N) (N*nu*E+E-2*E*nu)/(N-nu*N); %ultim cas
+%kappa = @(E,nu, N) (N*nu*E+E-2*E*nu)/(N-nu*N-2*N*nu^2);
+kappa = @(E,nu, N) (N*nu*E+E-2*E*nu)/(N-nu*N);
 mu0 = mu(E0,nu0);
 mu1 = mu(E1,nu1); 
 kappa0 = kappa(E0, nu0, N);

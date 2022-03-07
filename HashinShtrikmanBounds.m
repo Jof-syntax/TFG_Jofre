@@ -103,4 +103,20 @@ ETAmu = solve((2*N*(F0k + 2*F0mu)*(N - 1))/(F0mu*(N^2 + N - 2)*(F0k*N - 2*F0mu +
 ETAmu = simplify(ETAmu);
 disp('ETA mu =');
 pretty(ETAmu);
+%%
+nu = sym('nu','real');
+E = sym('E','real');
+N = sym('N','real');
+
+lambda = nu*E/((1+nu)*(1-2*nu));
+mu = E/(2*(nu+1));
+kappa = lambda + 2/N*mu;
+kappa = expand(kappa);
+kappa = simplify(kappa);
+pretty(kappa);
+ 
+N = 3;
+fun = E*((N-2)*nu+1)/(N*(nu+1)*(1-2*nu));
+fun = simplify(fun);
+pretty(fun)
 
